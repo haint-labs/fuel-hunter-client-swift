@@ -27,26 +27,26 @@ import NIOHTTP1
 import SwiftProtobuf
 
 
-/// Usage: instantiate SnapshotServiceServiceClient, then call methods of this protocol to make API calls.
-public protocol SnapshotServiceService {
+/// Usage: instantiate SnapshotServiceClient, then call methods of this protocol to make API calls.
+public protocol SnapshotServiceClientProtocol {
   func getSnapshots(_ request: SnapshotQuery, callOptions: CallOptions?) -> UnaryCall<SnapshotQuery, SnapshotResponse>
 }
 
-public final class SnapshotServiceServiceClient: GRPCClient, SnapshotServiceService {
-  public let connection: ClientConnection
+public final class SnapshotServiceClient: GRPCClient, SnapshotServiceClientProtocol {
+  public let channel: GRPCChannel
   public var defaultCallOptions: CallOptions
 
   /// Creates a client for the SnapshotService service.
   ///
   /// - Parameters:
-  ///   - connection: `ClientConnection` to the service host.
+  ///   - channel: `GRPCChannel` to the service host.
   ///   - defaultCallOptions: Options to use for each service call if the user doesn't provide them.
-  public init(connection: ClientConnection, defaultCallOptions: CallOptions = CallOptions()) {
-    self.connection = connection
+  public init(channel: GRPCChannel, defaultCallOptions: CallOptions = CallOptions()) {
+    self.channel = channel
     self.defaultCallOptions = defaultCallOptions
   }
 
-  /// Asynchronous unary call to GetSnapshots.
+  /// Unary call to GetSnapshots
   ///
   /// - Parameters:
   ///   - request: Request to send to GetSnapshots.
@@ -59,4 +59,9 @@ public final class SnapshotServiceServiceClient: GRPCClient, SnapshotServiceServ
   }
 
 }
+
+
+// Provides conformance to `GRPCPayload` for request and response messages
+extension SnapshotQuery: GRPCProtobufPayload {}
+extension SnapshotResponse: GRPCProtobufPayload {}
 

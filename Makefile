@@ -1,7 +1,7 @@
 # NOTE: Trying to guess proto files default location
 PROTO ?= ./../fuel-hunter-proto/proto
 
-PROTOC_LINK = https://github.com/protocolbuffers/protobuf/releases/download/v3.10.1/protoc-3.10.1-osx-x86_64.zip
+PROTOC_LINK = https://github.com/protocolbuffers/protobuf/releases/download/v3.11.4/protoc-3.11.4-osx-x86_64.zip
 PROTOC_BUILD = ./.protoc
 PROTOC_BIN = $(PROTOC_BUILD)/bin/protoc
 
@@ -51,9 +51,7 @@ $(SWIFT_GRPC_BIN):
 
 	mkdir -p $(PROTOC_BUILD)/bin
 
-	swift build \
-		--package-path $(REPO) \
-		--product protoc-gen-grpc-swift
+	make plugins -C $(REPO)
 
 	find $(REPO)/.build \
 		-type f \

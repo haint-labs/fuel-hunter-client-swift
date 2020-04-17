@@ -2,7 +2,7 @@ import FHClient
 import GRPC
 import NIO
 
-let connection = ClientConnection(
+let channel = ClientConnection(
     configuration: ClientConnection.Configuration(
         target: .hostAndPort("localhost", 50051),
         eventLoopGroup: MultiThreadedEventLoopGroup(
@@ -11,7 +11,7 @@ let connection = ClientConnection(
     )
 )
 
-let client = SnapshotServiceServiceClient(connection: connection)
+let client = SnapshotServiceClient(channel: channel)
 
 let query = SnapshotQuery.with { _ in }
 
