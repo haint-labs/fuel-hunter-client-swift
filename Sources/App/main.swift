@@ -2,14 +2,11 @@ import FHClient
 import GRPC
 import NIO
 
-let channel = ClientConnection(
-    configuration: ClientConnection.Configuration(
-        target: .hostAndPort("localhost", 50051),
-        eventLoopGroup: MultiThreadedEventLoopGroup(
-            numberOfThreads: 1
-        )
-    )
-)
+let group = PlatformSupport.makeEventLoopGroup(loopCount: 1)
+
+let channel = ClientConnection
+    .insecure(group: group)
+    .connect(host: "162.243.16.251", port: 50051)
 
 let client = SnapshotServiceClient(channel: channel)
 
