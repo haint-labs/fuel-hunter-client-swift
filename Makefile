@@ -5,6 +5,10 @@ PROTOC_LINK = https://github.com/protocolbuffers/protobuf/releases/download/v3.1
 PROTOC_BUILD = ./.protoc
 PROTOC_BIN = $(PROTOC_BUILD)/bin/protoc
 
+COMMON_PROTOS_VERSION = 1.50.0
+COMMON_PROTOS_LINK = https://github.com/googleapis/api-common-protos/archive/$(COMMON_PROTOS_VERSION).zip
+COMMON_PROTOS = ./.protos/api-common-protos-$(COMMON_PROTOS_VERSION)
+
 SWIFT_GRPC_BIN = $(PROTOC_BUILD)/bin/protoc-gen-swift $(PROTOC_BUILD)/bin/protoc-gen-grpc-swift 
 SWIFT_GRPC_OUT = ./Sources/FHClient/Generated
 
@@ -60,6 +64,17 @@ $(SWIFT_GRPC_BIN):
 		-exec mv {} ./.protoc/bin \;
 
 
+# Get common protos
+.PHONY: common-protos
+common-protos: $(COMMON_PROTOS)
+
+$(COMMON_PROTOS):
+	$(eval ARTIFACT := common-protos.zip)
+	
+	wget -O $(ARTIFACT) $(COMMON_PROTOS_LINK)
+	unzip $(ARTIFACT) -d ./.protos
+	rm $(ARTIFACT)
+
 # Generate swift client
 .PHONY: swift-client
 swift-client:
@@ -67,6 +82,7 @@ swift-client:
 
 	PATH=$(PROTOC_BUILD)/bin \
 		protoc $(PROTO_FILES) \
+			-I$(COMMON_PROTOS) \
 			--proto_path=$(PROTO) \
 			--swift_out=Visibility=Public,FileNaming=DropPath:$(SWIFT_GRPC_OUT) \
 			--grpc-swift_out=Server=false,Client=true,Visibility=Public,FileNaming=DropPath:$(SWIFT_GRPC_OUT)

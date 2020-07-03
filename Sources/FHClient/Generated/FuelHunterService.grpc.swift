@@ -27,17 +27,20 @@ import NIOHTTP1
 import SwiftProtobuf
 
 
-/// Usage: instantiate FuelHunterServiceClient, then call methods of this protocol to make API calls.
-public protocol FuelHunterServiceClientProtocol {
-  func getStations(_ request: Station.Query, callOptions: CallOptions?) -> UnaryCall<Station.Query, Station.Response>
-  func getCompanies(_ request: Company.Query, callOptions: CallOptions?) -> UnaryCall<Company.Query, Company.Response>
+/// Usage: instantiate Fuel_Hunter_FuelHunterServiceClient, then call methods of this protocol to make API calls.
+public protocol Fuel_Hunter_FuelHunterServiceClientProtocol {
+  func getStations(_ request: Fuel_Hunter_Station.Query, callOptions: CallOptions?) -> UnaryCall<Fuel_Hunter_Station.Query, Fuel_Hunter_Station.Response>
+  func updateStations(_ request: Fuel_Hunter_Station.UpdateRequest, callOptions: CallOptions?) -> UnaryCall<Fuel_Hunter_Station.UpdateRequest, Fuel_Hunter_Update.Response>
+  func getCompanies(_ request: Fuel_Hunter_Company.Query, callOptions: CallOptions?) -> UnaryCall<Fuel_Hunter_Company.Query, Fuel_Hunter_Company.Response>
+  func updateCompanies(_ request: Fuel_Hunter_Company.UpdateRequest, callOptions: CallOptions?) -> UnaryCall<Fuel_Hunter_Company.UpdateRequest, Fuel_Hunter_Update.Response>
+  func getSnapshots(_ request: Fuel_Hunter_Snapshot.Query, callOptions: CallOptions?) -> UnaryCall<Fuel_Hunter_Snapshot.Query, Fuel_Hunter_Snapshot.Response>
 }
 
-public final class FuelHunterServiceClient: GRPCClient, FuelHunterServiceClientProtocol {
+public final class Fuel_Hunter_FuelHunterServiceClient: GRPCClient, Fuel_Hunter_FuelHunterServiceClientProtocol {
   public let channel: GRPCChannel
   public var defaultCallOptions: CallOptions
 
-  /// Creates a client for the FuelHunterService service.
+  /// Creates a client for the fuel.hunter.FuelHunterService service.
   ///
   /// - Parameters:
   ///   - channel: `GRPCChannel` to the service host.
@@ -53,8 +56,20 @@ public final class FuelHunterServiceClient: GRPCClient, FuelHunterServiceClientP
   ///   - request: Request to send to GetStations.
   ///   - callOptions: Call options; `self.defaultCallOptions` is used if `nil`.
   /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  public func getStations(_ request: Station.Query, callOptions: CallOptions? = nil) -> UnaryCall<Station.Query, Station.Response> {
-    return self.makeUnaryCall(path: "/FuelHunterService/GetStations",
+  public func getStations(_ request: Fuel_Hunter_Station.Query, callOptions: CallOptions? = nil) -> UnaryCall<Fuel_Hunter_Station.Query, Fuel_Hunter_Station.Response> {
+    return self.makeUnaryCall(path: "/fuel.hunter.FuelHunterService/GetStations",
+                              request: request,
+                              callOptions: callOptions ?? self.defaultCallOptions)
+  }
+
+  /// Unary call to UpdateStations
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to UpdateStations.
+  ///   - callOptions: Call options; `self.defaultCallOptions` is used if `nil`.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  public func updateStations(_ request: Fuel_Hunter_Station.UpdateRequest, callOptions: CallOptions? = nil) -> UnaryCall<Fuel_Hunter_Station.UpdateRequest, Fuel_Hunter_Update.Response> {
+    return self.makeUnaryCall(path: "/fuel.hunter.FuelHunterService/UpdateStations",
                               request: request,
                               callOptions: callOptions ?? self.defaultCallOptions)
   }
@@ -65,8 +80,32 @@ public final class FuelHunterServiceClient: GRPCClient, FuelHunterServiceClientP
   ///   - request: Request to send to GetCompanies.
   ///   - callOptions: Call options; `self.defaultCallOptions` is used if `nil`.
   /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  public func getCompanies(_ request: Company.Query, callOptions: CallOptions? = nil) -> UnaryCall<Company.Query, Company.Response> {
-    return self.makeUnaryCall(path: "/FuelHunterService/GetCompanies",
+  public func getCompanies(_ request: Fuel_Hunter_Company.Query, callOptions: CallOptions? = nil) -> UnaryCall<Fuel_Hunter_Company.Query, Fuel_Hunter_Company.Response> {
+    return self.makeUnaryCall(path: "/fuel.hunter.FuelHunterService/GetCompanies",
+                              request: request,
+                              callOptions: callOptions ?? self.defaultCallOptions)
+  }
+
+  /// Unary call to UpdateCompanies
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to UpdateCompanies.
+  ///   - callOptions: Call options; `self.defaultCallOptions` is used if `nil`.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  public func updateCompanies(_ request: Fuel_Hunter_Company.UpdateRequest, callOptions: CallOptions? = nil) -> UnaryCall<Fuel_Hunter_Company.UpdateRequest, Fuel_Hunter_Update.Response> {
+    return self.makeUnaryCall(path: "/fuel.hunter.FuelHunterService/UpdateCompanies",
+                              request: request,
+                              callOptions: callOptions ?? self.defaultCallOptions)
+  }
+
+  /// Unary call to GetSnapshots
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to GetSnapshots.
+  ///   - callOptions: Call options; `self.defaultCallOptions` is used if `nil`.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  public func getSnapshots(_ request: Fuel_Hunter_Snapshot.Query, callOptions: CallOptions? = nil) -> UnaryCall<Fuel_Hunter_Snapshot.Query, Fuel_Hunter_Snapshot.Response> {
+    return self.makeUnaryCall(path: "/fuel.hunter.FuelHunterService/GetSnapshots",
                               request: request,
                               callOptions: callOptions ?? self.defaultCallOptions)
   }
@@ -75,8 +114,13 @@ public final class FuelHunterServiceClient: GRPCClient, FuelHunterServiceClientP
 
 
 // Provides conformance to `GRPCPayload` for request and response messages
-extension Station.Query: GRPCProtobufPayload {}
-extension Station.Response: GRPCProtobufPayload {}
-extension Company.Query: GRPCProtobufPayload {}
-extension Company.Response: GRPCProtobufPayload {}
+extension Fuel_Hunter_Station.Query: GRPCProtobufPayload {}
+extension Fuel_Hunter_Station.Response: GRPCProtobufPayload {}
+extension Fuel_Hunter_Station.UpdateRequest: GRPCProtobufPayload {}
+extension Fuel_Hunter_Update.Response: GRPCProtobufPayload {}
+extension Fuel_Hunter_Company.Query: GRPCProtobufPayload {}
+extension Fuel_Hunter_Company.Response: GRPCProtobufPayload {}
+extension Fuel_Hunter_Company.UpdateRequest: GRPCProtobufPayload {}
+extension Fuel_Hunter_Snapshot.Query: GRPCProtobufPayload {}
+extension Fuel_Hunter_Snapshot.Response: GRPCProtobufPayload {}
 

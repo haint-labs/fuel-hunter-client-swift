@@ -8,10 +8,10 @@ let channel = ClientConnection
     .insecure(group: group)
     .connect(host: "162.243.16.251", port: 50051)
 
-let client = FuelHunterServiceClient(channel: channel)
+let client = Fuel_Hunter_FuelHunterServiceClient(channel: channel)
 
 let companiesFuture = client
-    .getCompanies(Company.Query.with { _ in })
+    .getCompanies(Fuel_Hunter_Company.Query.with { _ in })
     .response
 
 companiesFuture
@@ -21,7 +21,7 @@ companiesFuture
     }
 
 let stationFuture = client
-    .getStations(Station.Query.with { _ in })
+    .getStations(Fuel_Hunter_Station.Query.with { _ in })
     .response
     
 stationFuture
