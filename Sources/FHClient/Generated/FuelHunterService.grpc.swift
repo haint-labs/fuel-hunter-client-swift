@@ -33,7 +33,7 @@ public protocol Fuel_Hunter_FuelHunterServiceClientProtocol {
   func updateStations(_ request: Fuel_Hunter_Station.UpdateRequest, callOptions: CallOptions?) -> UnaryCall<Fuel_Hunter_Station.UpdateRequest, Fuel_Hunter_Update.Response>
   func getCompanies(_ request: Fuel_Hunter_Company.Query, callOptions: CallOptions?) -> UnaryCall<Fuel_Hunter_Company.Query, Fuel_Hunter_Company.Response>
   func updateCompanies(_ request: Fuel_Hunter_Company.UpdateRequest, callOptions: CallOptions?) -> UnaryCall<Fuel_Hunter_Company.UpdateRequest, Fuel_Hunter_Update.Response>
-  func getSnapshots(_ request: Fuel_Hunter_Snapshot.Query, callOptions: CallOptions?) -> UnaryCall<Fuel_Hunter_Snapshot.Query, Fuel_Hunter_Snapshot.Response>
+  func getPrices(_ request: Fuel_Hunter_Price.Query, callOptions: CallOptions?) -> UnaryCall<Fuel_Hunter_Price.Query, Fuel_Hunter_Price.Response>
 }
 
 public final class Fuel_Hunter_FuelHunterServiceClient: GRPCClient, Fuel_Hunter_FuelHunterServiceClientProtocol {
@@ -98,14 +98,14 @@ public final class Fuel_Hunter_FuelHunterServiceClient: GRPCClient, Fuel_Hunter_
                               callOptions: callOptions ?? self.defaultCallOptions)
   }
 
-  /// Unary call to GetSnapshots
+  /// Unary call to GetPrices
   ///
   /// - Parameters:
-  ///   - request: Request to send to GetSnapshots.
+  ///   - request: Request to send to GetPrices.
   ///   - callOptions: Call options; `self.defaultCallOptions` is used if `nil`.
   /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  public func getSnapshots(_ request: Fuel_Hunter_Snapshot.Query, callOptions: CallOptions? = nil) -> UnaryCall<Fuel_Hunter_Snapshot.Query, Fuel_Hunter_Snapshot.Response> {
-    return self.makeUnaryCall(path: "/fuel.hunter.FuelHunterService/GetSnapshots",
+  public func getPrices(_ request: Fuel_Hunter_Price.Query, callOptions: CallOptions? = nil) -> UnaryCall<Fuel_Hunter_Price.Query, Fuel_Hunter_Price.Response> {
+    return self.makeUnaryCall(path: "/fuel.hunter.FuelHunterService/GetPrices",
                               request: request,
                               callOptions: callOptions ?? self.defaultCallOptions)
   }
@@ -121,6 +121,6 @@ extension Fuel_Hunter_Update.Response: GRPCProtobufPayload {}
 extension Fuel_Hunter_Company.Query: GRPCProtobufPayload {}
 extension Fuel_Hunter_Company.Response: GRPCProtobufPayload {}
 extension Fuel_Hunter_Company.UpdateRequest: GRPCProtobufPayload {}
-extension Fuel_Hunter_Snapshot.Query: GRPCProtobufPayload {}
-extension Fuel_Hunter_Snapshot.Response: GRPCProtobufPayload {}
+extension Fuel_Hunter_Price.Query: GRPCProtobufPayload {}
+extension Fuel_Hunter_Price.Response: GRPCProtobufPayload {}
 

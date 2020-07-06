@@ -30,9 +30,19 @@ stationFuture
         print($0.stations)
     }
 
+let pricesFuture = client
+    .getPrices(Fuel_Hunter_Price.Query.with { _ in })
+    .response
+
+pricesFuture
+    .whenSuccess {
+        print("Prices: \($0.prices.count)")
+        print($0.prices)
+    }
 
 let job = companiesFuture
     .and(stationFuture)
+    .and(pricesFuture)
 
 do {
     try _ = job.wait()
