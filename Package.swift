@@ -14,7 +14,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/grpc/grpc-swift.git", from: "1.0.0-alpha.11")
+        .package(url: "https://github.com/grpc/grpc-swift.git", from: "1.0.0-alpha.20")
     ],
     targets: [
         .target(

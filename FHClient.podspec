@@ -14,5 +14,5 @@
     
     spec.ios.deployment_target = '10.0'
     
-    spec.dependency 'gRPC-Swift', '1.0.0-alpha.11'
+    spec.dependency 'gRPC-Swift', '1.0.0-alpha.20'
   end
