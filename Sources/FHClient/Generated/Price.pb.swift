@@ -24,7 +24,7 @@ public struct Fuel_Hunter_Price {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  public var id: Int64 = 0
+  public var id: String = String()
 
   public var city: String = String()
 
@@ -38,7 +38,7 @@ public struct Fuel_Hunter_Price {
 
   public var type: Fuel_Hunter_Price.FuelType = .e95
 
-  public var stationID: Int64 = 0
+  public var stationID: String = String()
 
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -76,14 +76,47 @@ public struct Fuel_Hunter_Price {
 
   }
 
+  public struct Location {
+    // SwiftProtobuf.Message conformance is added in an extension below. See the
+    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+    // methods supported on all messages.
+
+    public var longitude: Float = 0
+
+    public var latitude: Float = 0
+
+    public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+    public init() {}
+  }
+
   public struct Query {
     // SwiftProtobuf.Message conformance is added in an extension below. See the
     // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
     // methods supported on all messages.
 
+    public var city: [String] = []
+
+    public var type: [String] = []
+
+    public var stationID: [String] = []
+
+    public var location: Fuel_Hunter_Price.Location {
+      get {return _location ?? Fuel_Hunter_Price.Location()}
+      set {_location = newValue}
+    }
+    /// Returns true if `location` has been explicitly set.
+    public var hasLocation: Bool {return self._location != nil}
+    /// Clears the value of `location`. Subsequent reads from it will return its default value.
+    public mutating func clearLocation() {self._location = nil}
+
+    public var distance: Float = 0
+
     public var unknownFields = SwiftProtobuf.UnknownStorage()
 
     public init() {}
+
+    fileprivate var _location: Fuel_Hunter_Price.Location? = nil
   }
 
   public struct Response {
@@ -91,9 +124,39 @@ public struct Fuel_Hunter_Price {
     // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
     // methods supported on all messages.
 
-    public var prices: [Fuel_Hunter_Price] = []
+    public var items: [Fuel_Hunter_Price.Response.Item] = []
 
     public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+    public struct Item {
+      // SwiftProtobuf.Message conformance is added in an extension below. See the
+      // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+      // methods supported on all messages.
+
+      public var type: Fuel_Hunter_Price.FuelType = .e95
+
+      public var prices: [Fuel_Hunter_Price.Response.CompanyPriceGrouped] = []
+
+      public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+      public init() {}
+    }
+
+    public struct CompanyPriceGrouped {
+      // SwiftProtobuf.Message conformance is added in an extension below. See the
+      // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+      // methods supported on all messages.
+
+      public var price: Float = 0
+
+      public var company: String = String()
+
+      public var stations: [String] = []
+
+      public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+      public init() {}
+    }
 
     public init() {}
   }
@@ -122,7 +185,7 @@ fileprivate let _protobuf_package = "fuel.hunter"
 extension Fuel_Hunter_Price: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".Price"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "id"),
+    1: .unique(proto: "id", json: "_id"),
     2: .same(proto: "city"),
     3: .same(proto: "name"),
     4: .same(proto: "price"),
@@ -135,22 +198,22 @@ extension Fuel_Hunter_Price: SwiftProtobuf.Message, SwiftProtobuf._MessageImplem
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
       switch fieldNumber {
-      case 1: try decoder.decodeSingularInt64Field(value: &self.id)
+      case 1: try decoder.decodeSingularStringField(value: &self.id)
       case 2: try decoder.decodeSingularStringField(value: &self.city)
       case 3: try decoder.decodeSingularStringField(value: &self.name)
       case 4: try decoder.decodeSingularFloatField(value: &self.price)
       case 5: try decoder.decodeSingularStringField(value: &self.address)
       case 6: try decoder.decodeSingularBoolField(value: &self.priority)
       case 7: try decoder.decodeSingularEnumField(value: &self.type)
-      case 8: try decoder.decodeSingularInt64Field(value: &self.stationID)
+      case 8: try decoder.decodeSingularStringField(value: &self.stationID)
       default: break
       }
     }
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if self.id != 0 {
-      try visitor.visitSingularInt64Field(value: self.id, fieldNumber: 1)
+    if !self.id.isEmpty {
+      try visitor.visitSingularStringField(value: self.id, fieldNumber: 1)
     }
     if !self.city.isEmpty {
       try visitor.visitSingularStringField(value: self.city, fieldNumber: 2)
@@ -170,8 +233,8 @@ extension Fuel_Hunter_Price: SwiftProtobuf.Message, SwiftProtobuf._MessageImplem
     if self.type != .e95 {
       try visitor.visitSingularEnumField(value: self.type, fieldNumber: 7)
     }
-    if self.stationID != 0 {
-      try visitor.visitSingularInt64Field(value: self.stationID, fieldNumber: 8)
+    if !self.stationID.isEmpty {
+      try visitor.visitSingularStringField(value: self.stationID, fieldNumber: 8)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
@@ -199,20 +262,89 @@ extension Fuel_Hunter_Price.FuelType: SwiftProtobuf._ProtoNameProviding {
   ]
 }
 
-extension Fuel_Hunter_Price.Query: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = Fuel_Hunter_Price.protoMessageName + ".Query"
-  public static let _protobuf_nameMap = SwiftProtobuf._NameMap()
+extension Fuel_Hunter_Price.Location: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = Fuel_Hunter_Price.protoMessageName + ".Location"
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "longitude"),
+    2: .same(proto: "latitude"),
+  ]
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let _ = try decoder.nextFieldNumber() {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      switch fieldNumber {
+      case 1: try decoder.decodeSingularFloatField(value: &self.longitude)
+      case 2: try decoder.decodeSingularFloatField(value: &self.latitude)
+      default: break
+      }
     }
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.longitude != 0 {
+      try visitor.visitSingularFloatField(value: self.longitude, fieldNumber: 1)
+    }
+    if self.latitude != 0 {
+      try visitor.visitSingularFloatField(value: self.latitude, fieldNumber: 2)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: Fuel_Hunter_Price.Location, rhs: Fuel_Hunter_Price.Location) -> Bool {
+    if lhs.longitude != rhs.longitude {return false}
+    if lhs.latitude != rhs.latitude {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Fuel_Hunter_Price.Query: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = Fuel_Hunter_Price.protoMessageName + ".Query"
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "city"),
+    2: .same(proto: "type"),
+    3: .same(proto: "stationId"),
+    4: .same(proto: "location"),
+    5: .same(proto: "distance"),
+  ]
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      switch fieldNumber {
+      case 1: try decoder.decodeRepeatedStringField(value: &self.city)
+      case 2: try decoder.decodeRepeatedStringField(value: &self.type)
+      case 3: try decoder.decodeRepeatedStringField(value: &self.stationID)
+      case 4: try decoder.decodeSingularMessageField(value: &self._location)
+      case 5: try decoder.decodeSingularFloatField(value: &self.distance)
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.city.isEmpty {
+      try visitor.visitRepeatedStringField(value: self.city, fieldNumber: 1)
+    }
+    if !self.type.isEmpty {
+      try visitor.visitRepeatedStringField(value: self.type, fieldNumber: 2)
+    }
+    if !self.stationID.isEmpty {
+      try visitor.visitRepeatedStringField(value: self.stationID, fieldNumber: 3)
+    }
+    if let v = self._location {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
+    }
+    if self.distance != 0 {
+      try visitor.visitSingularFloatField(value: self.distance, fieldNumber: 5)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   public static func ==(lhs: Fuel_Hunter_Price.Query, rhs: Fuel_Hunter_Price.Query) -> Bool {
+    if lhs.city != rhs.city {return false}
+    if lhs.type != rhs.type {return false}
+    if lhs.stationID != rhs.stationID {return false}
+    if lhs._location != rhs._location {return false}
+    if lhs.distance != rhs.distance {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -221,27 +353,103 @@ extension Fuel_Hunter_Price.Query: SwiftProtobuf.Message, SwiftProtobuf._Message
 extension Fuel_Hunter_Price.Response: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = Fuel_Hunter_Price.protoMessageName + ".Response"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "prices"),
+    1: .same(proto: "items"),
   ]
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
       switch fieldNumber {
-      case 1: try decoder.decodeRepeatedMessageField(value: &self.prices)
+      case 1: try decoder.decodeRepeatedMessageField(value: &self.items)
       default: break
       }
     }
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.prices.isEmpty {
-      try visitor.visitRepeatedMessageField(value: self.prices, fieldNumber: 1)
+    if !self.items.isEmpty {
+      try visitor.visitRepeatedMessageField(value: self.items, fieldNumber: 1)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   public static func ==(lhs: Fuel_Hunter_Price.Response, rhs: Fuel_Hunter_Price.Response) -> Bool {
+    if lhs.items != rhs.items {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Fuel_Hunter_Price.Response.Item: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = Fuel_Hunter_Price.Response.protoMessageName + ".Item"
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "type"),
+    2: .same(proto: "prices"),
+  ]
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      switch fieldNumber {
+      case 1: try decoder.decodeSingularEnumField(value: &self.type)
+      case 2: try decoder.decodeRepeatedMessageField(value: &self.prices)
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.type != .e95 {
+      try visitor.visitSingularEnumField(value: self.type, fieldNumber: 1)
+    }
+    if !self.prices.isEmpty {
+      try visitor.visitRepeatedMessageField(value: self.prices, fieldNumber: 2)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: Fuel_Hunter_Price.Response.Item, rhs: Fuel_Hunter_Price.Response.Item) -> Bool {
+    if lhs.type != rhs.type {return false}
     if lhs.prices != rhs.prices {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Fuel_Hunter_Price.Response.CompanyPriceGrouped: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = Fuel_Hunter_Price.Response.protoMessageName + ".CompanyPriceGrouped"
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "price"),
+    2: .same(proto: "company"),
+    3: .same(proto: "stations"),
+  ]
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      switch fieldNumber {
+      case 1: try decoder.decodeSingularFloatField(value: &self.price)
+      case 2: try decoder.decodeSingularStringField(value: &self.company)
+      case 3: try decoder.decodeRepeatedStringField(value: &self.stations)
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.price != 0 {
+      try visitor.visitSingularFloatField(value: self.price, fieldNumber: 1)
+    }
+    if !self.company.isEmpty {
+      try visitor.visitSingularStringField(value: self.company, fieldNumber: 2)
+    }
+    if !self.stations.isEmpty {
+      try visitor.visitRepeatedStringField(value: self.stations, fieldNumber: 3)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: Fuel_Hunter_Price.Response.CompanyPriceGrouped, rhs: Fuel_Hunter_Price.Response.CompanyPriceGrouped) -> Bool {
+    if lhs.price != rhs.price {return false}
+    if lhs.company != rhs.company {return false}
+    if lhs.stations != rhs.stations {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

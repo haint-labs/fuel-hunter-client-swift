@@ -24,7 +24,7 @@ public struct Fuel_Hunter_Station {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  public var id: Int64 = 0
+  public var id: String = String()
 
   public var company: String = String()
 
@@ -84,7 +84,7 @@ fileprivate let _protobuf_package = "fuel.hunter"
 extension Fuel_Hunter_Station: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".Station"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "id"),
+    1: .unique(proto: "id", json: "_id"),
     2: .same(proto: "company"),
     3: .same(proto: "latitude"),
     4: .same(proto: "longitude"),
@@ -96,7 +96,7 @@ extension Fuel_Hunter_Station: SwiftProtobuf.Message, SwiftProtobuf._MessageImpl
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
       switch fieldNumber {
-      case 1: try decoder.decodeSingularInt64Field(value: &self.id)
+      case 1: try decoder.decodeSingularStringField(value: &self.id)
       case 2: try decoder.decodeSingularStringField(value: &self.company)
       case 3: try decoder.decodeSingularFloatField(value: &self.latitude)
       case 4: try decoder.decodeSingularFloatField(value: &self.longitude)
@@ -109,8 +109,8 @@ extension Fuel_Hunter_Station: SwiftProtobuf.Message, SwiftProtobuf._MessageImpl
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if self.id != 0 {
-      try visitor.visitSingularInt64Field(value: self.id, fieldNumber: 1)
+    if !self.id.isEmpty {
+      try visitor.visitSingularStringField(value: self.id, fieldNumber: 1)
     }
     if !self.company.isEmpty {
       try visitor.visitSingularStringField(value: self.company, fieldNumber: 2)

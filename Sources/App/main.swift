@@ -36,8 +36,8 @@ let pricesFuture = client
 
 pricesFuture
     .whenSuccess {
-        print("Prices: \($0.prices.count)")
-        print($0.prices)
+        print("Prices: \($0.items.count))")
+        print($0.items)
     }
 
 let job = companiesFuture
